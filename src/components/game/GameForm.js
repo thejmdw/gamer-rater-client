@@ -24,7 +24,7 @@ export const GameForm = () => {
         categories: [],
         ageRange: 0,
         releaseYear: 0,
-        gameDuration: 0
+        gameDuration: 0 
     })
 
     /*
