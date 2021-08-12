@@ -5,7 +5,7 @@ import { useHistory, Link, useParams } from "react-router-dom"
 
 export const GameDetails = () => {
     const history = useHistory()
-    const { reviews, getGameById, getReviewsByGameId } = useContext(GameContext)
+    const { reviews, getGameById, getReviewsByGameId, updateGame } = useContext(GameContext)
     // const { events, getEvents } = useContext(EventContext)
 
     const [ game, setGame ] = useState({})
@@ -59,17 +59,13 @@ export const GameDetails = () => {
                             }}
                             >Create Review</button>
                         {reviews?.map(r => <div><li>{r.review}</li>
-                                                                                        -{r.user.first_name}</div>)}</div>
-                        
-                        {/* <div class="slidecontainer">
-                            <input type="range" min="1" max="10" value={rating.rating} class="slider" id="myRange" onChange={changeRatingState}/>
-                        </div>     */}
-
-                        {/* <div className="game__edit">
+                                     -{r.user.first_name}</div>)}</div>
+                                     <div className="game__edit">
                         <button className="btn btn-3"
-                                    onClick={() => history.push(`games/edit/${game.id}`)}
+                                    onClick={() => history.push(`/games/edit/${game.id}`)}
                                     >Edit Game</button>
-                        </div> */}
+                        </div>
+                                    
                         
 
                     </section>

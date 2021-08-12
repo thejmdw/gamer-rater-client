@@ -34,17 +34,19 @@ export const GameForm = () => {
     useEffect(() => {
         getGameCategories()
         
-        // if (gameId) {
-        //     getGameById(gameId)
-        //      .then(game => setCurrentGame({
-        //          skillLevel: game.skill_level,
-        //          numberOfPlayers: game.number_of_players,
-        //          title: game.title,
-        //          maker: game.maker,
-        //          gameTypeId: game.game_type.id
- 
-        //      }))
-        //  }
+        if (gameId) {
+            getGameById(gameId)
+             .then(game => setCurrentGame({
+                description: game.description,
+                numberOfPlayers: game.number_of_player,
+                title: game.title,
+                designer: game.designer,
+                categories: game.categories,
+                ageRange: game.age_range,
+                releaseYear: game.release_year,
+                gameDuration: game.game_duration 
+             }))
+         }
     }, [])
     
     // useEffect(() => {
@@ -191,11 +193,14 @@ export const GameForm = () => {
 
                     const game = {
                         id: parseInt(gameId),
-                        maker: currentGame.maker,
+                        designer: currentGame.designer,
                         title: currentGame.title,
                         numberOfPlayers: parseInt(currentGame.numberOfPlayers),
-                        skillLevel: parseInt(currentGame.skillLevel),
-                        gameTypeId: parseInt(currentGame.gameTypeId)
+                        releaseYear: parseInt(currentGame.releaseYear),
+                        ageRange: parseInt(currentGame.ageRange),
+                        categories: currentGame.categories,
+                        description: currentGame.description,
+                        gameDuration: parseInt(currentGame.gameDuration)
                     }
 
                     // Send POST request to your API
