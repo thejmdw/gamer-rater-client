@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect } from "react"
 import { GameContext } from "./GameProvider.js"
-// import { ProfileContext } from "../auth/ProfileProvider.js"
+import { ProfileContext } from "../auth/ProfileProvider.js"
 import { useHistory, useParams } from 'react-router-dom'
 
 
 export const GameForm = () => {
     const history = useHistory()
     const { game, createGame, getGameCategories, gameCategories, getGameById, updateGame } = useContext(GameContext)
-    // const { getProfile } = useContext(ProfileContext)
+    const { profile, getProfile } = useContext(ProfileContext)
 
     const { gameId } = useParams()
 
@@ -32,6 +32,7 @@ export const GameForm = () => {
         element presents game type choices to the user.
     */
     useEffect(() => {
+        getProfile()
         getGameCategories()
         
         if (gameId) {
@@ -41,7 +42,7 @@ export const GameForm = () => {
                 numberOfPlayers: game.number_of_player,
                 title: game.title,
                 designer: game.designer,
-                categories: game.categories,
+                categories: game.categories[0].id,
                 ageRange: game.age_range,
                 releaseYear: game.release_year,
                 gameDuration: game.game_duration 
@@ -99,13 +100,14 @@ export const GameForm = () => {
 
     const changeGameTypeState = (event) => {
         const newGameState = { ...currentGame }
-        newGameState.categories.push(parseInt(event.target.value))
+        newGameState[event.target.name] = event.target.value
+        // newGameState.categories.push(parseInt(event.target.value))
         setCurrentGame(newGameState)
     }
     /* REFACTOR CHALLENGE END */
 
     return (
-        <form className="gameForm">
+        profile.user?.id === currentGame.user ? <form className="gameForm">
             { gameId ? <h2 className="gameForm__title">Edit Game</h2> : <h2 className="gameForm__title">Register New Game</h2>}
             <fieldset>
                 <div className="form-group">
@@ -229,6 +231,6 @@ export const GameForm = () => {
                         .then(() => history.push("/games"))
                 }}
                 className="btn btn-primary">Create</button>}
-        </form>
+        </form> : <div>You're not allowed to edit a Game</div>
     )
 }
