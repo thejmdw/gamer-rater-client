@@ -8,8 +8,10 @@ export const GameProvider = (props) => {
     const [ game, setGame ] = useState({})
     const [ review, setReview ] = useState({})
     const [ rating, setRating ] = useState({})
+    const [ image, setImage ] = useState({})
     const [ gameCategories, setGameCategories ] = useState([])
     const [ reviews, setReviews ] = useState([])
+    const [ images, setImages ] = useState([])
 
     const createGame = (game) => {
         return fetch("http://localhost:8000/games", {
@@ -47,6 +49,19 @@ export const GameProvider = (props) => {
             body: JSON.stringify(rating)
          })
             .then(setRating(rating))
+            // .then()
+    }
+    
+    const createImage = (image) => {
+        return fetch("http://localhost:8000/images", {
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("lu_token")}`
+            },
+            body: JSON.stringify(image)
+         })
+            .then(setImage(image))
             // .then()
     }
 
@@ -102,13 +117,23 @@ export const GameProvider = (props) => {
             .then(response => response.json())
             .then(setReviews)
     }
+    
+    const getImagesByGameId = (gameId) => {
+        return fetch(`http://localhost:8000/images?game=${gameId}`, { 
+            headers:{
+                "Authorization": `Token ${localStorage.getItem("lu_token")}`
+            }
+        })
+            .then(response => response.json())
+            .then(setImages)
+    }
  
     
 
     return (
-        <GameContext.Provider value={{ games, game, gameCategories, review, rating, reviews,
-                                       getGames, createGame, createReview, createRating, 
-                                       getGameCategories, updateGame, getGameById, getReviewsByGameId }} >
+        <GameContext.Provider value={{ games, game, gameCategories, review, rating, reviews, image, images,
+                                       getGames, createGame, createReview, createRating, createImage,
+                                       getGameCategories, updateGame, getGameById, getReviewsByGameId, getImagesByGameId }} >
             { props.children }
         </GameContext.Provider>
 

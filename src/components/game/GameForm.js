@@ -107,7 +107,7 @@ export const GameForm = () => {
     /* REFACTOR CHALLENGE END */
 
     return (
-        profile.user?.id === currentGame.user ? <form className="gameForm">
+        <form className="gameForm">
             { gameId ? <h2 className="gameForm__title">Edit Game</h2> : <h2 className="gameForm__title">Register New Game</h2>}
             <fieldset>
                 <div className="form-group">
@@ -202,7 +202,8 @@ export const GameForm = () => {
                         ageRange: parseInt(currentGame.ageRange),
                         categories: currentGame.categories,
                         description: currentGame.description,
-                        gameDuration: parseInt(currentGame.gameDuration)
+                        gameDuration: parseInt(currentGame.gameDuration),
+                        // user: profile.user.id
                     }
 
                     // Send POST request to your API
@@ -223,7 +224,8 @@ export const GameForm = () => {
                         ageRange: parseInt(currentGame.ageRange),
                         categories: currentGame.categories,
                         description: currentGame.description,
-                        gameDuration: parseInt(currentGame.gameDuration)
+                        gameDuration: parseInt(currentGame.gameDuration),
+                        // user: profile.user.id
                     }
 
                     // Send POST request to your API
@@ -231,6 +233,9 @@ export const GameForm = () => {
                         .then(() => history.push("/games"))
                 }}
                 className="btn btn-primary">Create</button>}
-        </form> : <div>You're not allowed to edit a Game</div>
+        </form> 
     )
 }
+
+// (profile.user?.id === currentGame.user) && (gameId) ? 
+// : <div>You're not allowed to edit a Game</div>
