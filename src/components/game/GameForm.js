@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect } from "react"
 import { GameContext } from "./GameProvider.js"
-// import { ProfileContext } from "../auth/ProfileProvider.js"
+import { ProfileContext } from "../auth/ProfileProvider.js"
 import { useHistory, useParams } from 'react-router-dom'
 
 
 export const GameForm = () => {
     const history = useHistory()
     const { game, createGame, getGameCategories, gameCategories, getGameById, updateGame } = useContext(GameContext)
-    // const { getProfile } = useContext(ProfileContext)
+    const { profile, getProfile } = useContext(ProfileContext)
 
     const { gameId } = useParams()
 
@@ -24,7 +24,7 @@ export const GameForm = () => {
         categories: [],
         ageRange: 0,
         releaseYear: 0,
-        gameDuration: 0
+        gameDuration: 0 
     })
 
     /*
@@ -32,19 +32,22 @@ export const GameForm = () => {
         element presents game type choices to the user.
     */
     useEffect(() => {
+        getProfile()
         getGameCategories()
         
-        // if (gameId) {
-        //     getGameById(gameId)
-        //      .then(game => setCurrentGame({
-        //          skillLevel: game.skill_level,
-        //          numberOfPlayers: game.number_of_players,
-        //          title: game.title,
-        //          maker: game.maker,
-        //          gameTypeId: game.game_type.id
- 
-        //      }))
-        //  }
+        if (gameId) {
+            getGameById(gameId)
+             .then(game => setCurrentGame({
+                description: game.description,
+                numberOfPlayers: game.number_of_player,
+                title: game.title,
+                designer: game.designer,
+                categories: game.categories[0].id,
+                ageRange: game.age_range,
+                releaseYear: game.release_year,
+                gameDuration: game.game_duration 
+             }))
+         }
     }, [])
     
     // useEffect(() => {
@@ -97,13 +100,14 @@ export const GameForm = () => {
 
     const changeGameTypeState = (event) => {
         const newGameState = { ...currentGame }
-        newGameState.categories.push(parseInt(event.target.value))
+        newGameState[event.target.name] = event.target.value
+        // newGameState.categories.push(parseInt(event.target.value))
         setCurrentGame(newGameState)
     }
     /* REFACTOR CHALLENGE END */
 
     return (
-        <form className="gameForm">
+        profile.user?.id === currentGame.user ? <form className="gameForm">
             { gameId ? <h2 className="gameForm__title">Edit Game</h2> : <h2 className="gameForm__title">Register New Game</h2>}
             <fieldset>
                 <div className="form-group">
@@ -191,11 +195,14 @@ export const GameForm = () => {
 
                     const game = {
                         id: parseInt(gameId),
-                        maker: currentGame.maker,
+                        designer: currentGame.designer,
                         title: currentGame.title,
                         numberOfPlayers: parseInt(currentGame.numberOfPlayers),
-                        skillLevel: parseInt(currentGame.skillLevel),
-                        gameTypeId: parseInt(currentGame.gameTypeId)
+                        releaseYear: parseInt(currentGame.releaseYear),
+                        ageRange: parseInt(currentGame.ageRange),
+                        categories: currentGame.categories,
+                        description: currentGame.description,
+                        gameDuration: parseInt(currentGame.gameDuration)
                     }
 
                     // Send POST request to your API
@@ -224,6 +231,6 @@ export const GameForm = () => {
                         .then(() => history.push("/games"))
                 }}
                 className="btn btn-primary">Create</button>}
-        </form>
+        </form> : <div>You're not allowed to edit a Game</div>
     )
 }
