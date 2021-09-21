@@ -75,6 +75,7 @@ export const GameDetails = () => {
                         <div className="game__ageRange">Age Range: {game.age_range}</div>
                         <div className="game__ageRange">Average Rating: {game.average_rating}</div>
                         <div className="game__categories">Categories: {categories?.map(c => <li>{c.label}</li>)}</div>
+                        
                         <div> <h3>Upload an image:</h3>
                             <input type="file" id="game_image" onChange={createGameImageString} />
                             <input type="hidden" name="game_id" value={game.id} />
