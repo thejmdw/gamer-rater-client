@@ -5,13 +5,14 @@ import { useHistory, Link } from "react-router-dom"
 
 export const GameList = () => {
     const history = useHistory()
-    const { games, getGames } = useContext(GameContext)
+    const { games, getGames, searchGames } = useContext(GameContext)
     // const { events, getEvents } = useContext(EventContext)
 
     
 
     useEffect(() => {
         getGames()
+        searchGames()
         // getEvents()
     }, [])
 
@@ -21,6 +22,10 @@ export const GameList = () => {
         <header className="events__header">
                 <h1>Gamer Rater Games</h1>
             </header>
+            <input type="text"
+            className="input--wide"
+            onKeyUp={(event) => searchGames(event.target.value)}
+            placeholder="Search games by title... " />
             {
                 games.map(game => {
                     return <section key={`game--${game.id}`} className="game">

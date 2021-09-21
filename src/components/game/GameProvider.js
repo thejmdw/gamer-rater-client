@@ -9,7 +9,7 @@ export const GameProvider = (props) => {
     const [ review, setReview ] = useState({})
     const [ rating, setRating ] = useState({})
     const [ image, setImage ] = useState({})
-    const [ gameCategories, setGameCategories ] = useState([])
+    const [ categories, setGameCategories ] = useState([])
     const [ reviews, setReviews ] = useState([])
     const [ images, setImages ] = useState([])
 
@@ -98,6 +98,16 @@ export const GameProvider = (props) => {
             .then(setGames)
     }
     
+    const searchGames = (searchParams) => {
+        return fetch(`http://localhost:8000/games?q=${searchParams}`, { 
+            headers:{
+                "Authorization": `Token ${localStorage.getItem("lu_token")}`
+            }
+        })
+            .then(response => response.json())
+            .then(setGames)
+    }
+    
     const getGameCategories = () => {
         return fetch("http://localhost:8000/categories", { 
             headers:{
@@ -131,8 +141,8 @@ export const GameProvider = (props) => {
     
 
     return (
-        <GameContext.Provider value={{ games, game, gameCategories, review, rating, reviews, image, images,
-                                       getGames, createGame, createReview, createRating, createImage,
+        <GameContext.Provider value={{ games, game, categories, review, rating, reviews, image, images,
+                                       getGames, createGame, createReview, createRating, createImage, searchGames,
                                        getGameCategories, updateGame, getGameById, getReviewsByGameId, getImagesByGameId }} >
             { props.children }
         </GameContext.Provider>
